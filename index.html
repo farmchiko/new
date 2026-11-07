@@ -120,7 +120,9 @@ p{margin:0}
 .egg-hint svg{width:22px;height:22px;margin-right:8px;-webkit-animation:tap 1.6s ease-in-out infinite;animation:tap 1.6s ease-in-out infinite}
 
 /* сцена яйца */
-.egg-body{-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1;animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1}
+/* падение и первое покачивание — на внешнем слое, покачивание при наведении — на внутреннем, чтобы они не мешали друг другу */
+.egg-drop{-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1;animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1}
+.egg-body{-webkit-transform-origin:0 0;transform-origin:0 0}
 .egg-btn:hover .egg-body,.egg-btn:focus-visible .egg-body{-webkit-animation:wobble .9s ease-in-out infinite;animation:wobble .9s ease-in-out infinite}
 .is-open .egg-body,.is-open.egg-btn:hover .egg-body{-webkit-animation:none;animation:none}
 .egg-shadow{-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-animation:shadow .9s cubic-bezier(.3,1.4,.5,1) both;animation:shadow .9s cubic-bezier(.3,1.4,.5,1) both}
@@ -434,7 +436,7 @@ p{margin:0}
             </filter>
           </defs>
           <ellipse class="egg-shadow" cx="120" cy="294" rx="84" ry="9" fill="#1C2C78" opacity=".22"/>
-          <g class="egg-body">
+          <g class="egg-drop"><g class="egg-body">
             <!-- весёлый желток с белком -->
             <g>
               <g class="chick">
@@ -477,7 +479,7 @@ p{margin:0}
             <!-- трещина, видна при наведении -->
             <polyline class="crack" points="24.5,132.1 40,146 60,130 80,148 100,128 120,146 140,128 160,148 180,130 200,146 215.5,132.1" fill="none" stroke="#1C2C78" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
           </g>
-        </svg>
+        </g></svg>
       </button>
       <p class="egg-hint" id="eggHint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5a2 2 0 1 1 4 0v5l4.5.9a2 2 0 0 1 1.6 2.2L18.5 19a3 3 0 0 1-3 2.6h-4.3a3 3 0 0 1-2.3-1.1L5.5 16.4a1.7 1.7 0 0 1 2.5-2.3L9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Постучите по яйцу</span></p>
     </div>
