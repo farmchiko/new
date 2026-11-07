@@ -123,6 +123,8 @@ p{margin:0}
 /* падение и первое покачивание — на внешнем слое, покачивание при наведении — на внутреннем, чтобы они не мешали друг другу */
 .egg-drop{-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1;animation:drop .9s cubic-bezier(.3,1.4,.5,1) both,wobble 1.1s ease-in-out 1.5s 1}
 .egg-body{-webkit-transform-origin:0 0;transform-origin:0 0}
+/* после первого появления анимации снимаются совсем: Safari не сможет проиграть их повторно */
+.landed .egg-drop,.landed .egg-shadow,.landed .egg-stamp{-webkit-animation:none !important;animation:none !important}
 .egg-btn:hover .egg-body,.egg-btn:focus-visible .egg-body{-webkit-animation:wobble .9s ease-in-out infinite;animation:wobble .9s ease-in-out infinite}
 .is-open .egg-body,.is-open.egg-btn:hover .egg-body{-webkit-animation:none;animation:none}
 .egg-shadow{-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-animation:shadow .9s cubic-bezier(.3,1.4,.5,1) both;animation:shadow .9s cubic-bezier(.3,1.4,.5,1) both}
@@ -435,7 +437,7 @@ p{margin:0}
               <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/>
             </filter>
           </defs>
-          <ellipse class="egg-shadow" cx="120" cy="294" rx="84" ry="9" fill="#1C2C78" opacity=".22"/>
+          <ellipse class="egg-shadow" cx="120" cy="294" rx="84" ry="9" fill="#1C2C78"/>
           <g class="egg-drop"><g class="egg-body">
             <!-- весёлый желток с белком -->
             <g>
@@ -853,6 +855,14 @@ p{margin:0}
     eggBtn.setAttribute("aria-label", open ? t("egg_aria_open") : t("egg_aria"));
     hint.textContent = open ? t("egg_hint_open") : t("egg_hint");
   });
+  /* яйцо приземлилось: убираем анимацию появления */
+  function landed(){ if (eggBtn.className.indexOf("landed") < 0) eggBtn.className += " landed"; }
+  var eggDrop = eggBtn.querySelector(".egg-drop");
+  function onIntroEnd(ev){ if (ev.target === eggDrop && /wobble/.test(ev.animationName || "")) landed(); }
+  eggDrop.addEventListener("animationend", onIntroEnd);
+  eggDrop.addEventListener("webkitAnimationEnd", onIntroEnd);
+  setTimeout(landed, 3000);
+
   /* Safari иногда оставляет следы от сдвинутой скорлупы: после анимации перерисовываем рисунок целиком */
   var eggSvg = eggBtn.querySelector("svg");
   function repaint(){ eggSvg.style.display = "none"; void eggSvg.offsetHeight; eggSvg.style.display = ""; }
